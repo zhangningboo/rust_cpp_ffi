@@ -1,0 +1,18 @@
+[package]
+name = "rust_cpp_ffi"
+version = "0.1.0"
+edition = "2024"
+
+[build-dependencies]
+dotenv = "0.15.0"
+cmake = "0.1.54"
+cxx-build = "1.0.161"
+
+[dependencies]
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["local-time"] }
+serde = { version = "1.0.218", features = ["derive"] }
+serde_derive = "1.0.219"
+serde_json = "1.0.140"
+serde_with = "3.12.0"
+cxx = { version = "1.0.161", features = ["std", "c++17"] }
