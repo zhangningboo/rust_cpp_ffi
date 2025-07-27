@@ -1,4 +1,4 @@
-use std::ffi::{c_short, c_int, c_float, c_double};
+use std::ffi::{c_int, c_float, c_double};
 
 #[link(name = "cpp", kind = "static")]
 unsafe extern "C" {
