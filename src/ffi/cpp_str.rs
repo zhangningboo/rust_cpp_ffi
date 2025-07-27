@@ -2,9 +2,13 @@ use std::{ffi::{c_char, CStr, CString}, str::FromStr};
 
 #[link(name = "cpp", kind = "static")]
 unsafe extern "C" {
+    // cpp_str
     unsafe fn trans_string(rust_string: *const c_char) -> *const c_char;
     
     unsafe fn free_string(str: *const c_char);
+
+    // cpp_number
+    
 }
 
 pub fn rust_trans_string(rust_string: &String) -> String {
