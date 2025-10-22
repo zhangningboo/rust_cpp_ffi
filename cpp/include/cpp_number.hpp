@@ -5,7 +5,7 @@
 #include <string>
 
 int cpp_process_number(
-    const usize rust_int,
+    const int32_t rust_int,
     const float rust_float,
     const double rust_double
 );
