@@ -5,10 +5,11 @@
 #include <vector>
 #include <cstdlib>
 #include <cstring>
+#include <cstdint>
 
 typedef struct {
-    uint32_t *data;
-    uint32_t len;
+	uint32_t *data;
+	uint32_t len;
 } CArray;
 
 CArray add(std::vector<uint32_t>& c_vec);
@@ -18,9 +19,9 @@ extern "C"
 {
 #endif
 
-    bool cpp_process_array(CArray input_array, CArray* output_array);
+	bool cpp_process_array(CArray input_array, CArray* output_array);
 
-    bool cpp_free_array(CArray* c_array);
+	bool cpp_free_array(CArray* c_array);
 
 #ifdef __cplusplus
 }

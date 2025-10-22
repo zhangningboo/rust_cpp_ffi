@@ -3,11 +3,12 @@
 
 #include <cstring>
 #include <string>
+#include <cstdint>
 
 int cpp_process_number(
-    const int32_t rust_int,
-    const float rust_float,
-    const double rust_double
+	const int32_t rust_int,
+	const float rust_float,
+	const double rust_double
 );
 
 #ifdef __cplusplus
@@ -15,11 +16,11 @@ extern "C"
 {
 #endif
 
-    int trans_number(
-        const int32_t rust_int,
-        const float rust_float,  // 32位
-        const double rust_double // 64位
-    );
+	int trans_number(
+		const int32_t rust_int,
+		const float rust_float,  // 32位
+		const double rust_double // 64位
+	);
 
 #ifdef __cplusplus
 }
