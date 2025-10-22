@@ -8,13 +8,13 @@ unsafe extern "C" {
 
 #[repr(C)]
 pub struct CArray {
-    pub data: *mut i32,
+    pub data: *mut u32,
     pub len: u32,
 }
 
 
 impl CArray {
-    pub fn from_vec(data: &[i32]) -> CArray {
+    pub fn from_vec(data: &[u32]) -> CArray {
         let mut hold_vec = data.to_vec();
         let carray = CArray {
             data: hold_vec.as_mut_ptr(),
@@ -25,7 +25,7 @@ impl CArray {
         carray
     }
 
-    pub fn to_vec(&self) -> Vec<i32> {
+    pub fn to_vec(&self) -> Vec<u32> {
         if self.data.is_null() || self.len == 0 {
             return Vec::new();
         }
@@ -36,7 +36,7 @@ impl CArray {
 }
 
 
-pub fn rust_call_cpp_process_array(rust_data: &[i32]) -> Option<Vec<i32>> {
+pub fn rust_call_cpp_process_array(rust_data: &[u32]) -> Option<Vec<u32>> {
     let rust_input_array = CArray::from_vec(rust_data);
     let mut cpp_output_array = CArray {
         data: std::ptr::null_mut(),

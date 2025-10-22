@@ -14,7 +14,7 @@ fn main() {
     let ffi_process = rust_trans_number(1000, 2.0 , 3.0);
     println!("rust_trans_number 结果：{}", ffi_process);
 
-    let rust_data: Vec<i32> = vec![1, 2, 3, 4, 5];
+    let rust_data: Vec<u32> = vec![1, 2, 3, 4, 5];
     rust_call_cpp_process_array(&rust_data);
 
     for i in 1..10 {

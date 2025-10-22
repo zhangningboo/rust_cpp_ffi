@@ -1,6 +1,6 @@
 #include "cpp_array.hpp"
 
-CArray add(std::vector<uint32_t>& c_vec) {
+void add(std::vector<uint32_t>& c_vec) {
     for (auto &item : c_vec) {
         item++;
         std::cout << "item: " << item << std::endl;

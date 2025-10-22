@@ -12,7 +12,7 @@ typedef struct {
 	uint32_t len;
 } CArray;
 
-CArray add(std::vector<uint32_t>& c_vec);
+void add(std::vector<uint32_t>& c_vec);
 
 #ifdef __cplusplus
 extern "C"
