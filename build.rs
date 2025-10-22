@@ -27,5 +27,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             // 未知操作系统
         }
     }
+    
+    println!("cargo:rustc-link-lib=dylib=stdc++");
     Ok(())
 }

@@ -13,6 +13,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_library(${PROJECT_NAME} STATIC
     src/cpp_str.cpp
     src/cpp_number.cpp
+    src/cpp_array.cpp
     src/cpp_map.cpp
 )
 # 头文件路径（供 Rust FFI 使用）
@@ -25,6 +26,7 @@ set(PROJECT_EXEC_NAME ${PROJECT_NAME}_bin)
 add_executable(${PROJECT_EXEC_NAME} src/main.cpp
     src/cpp_str.cpp
     src/cpp_number.cpp
+    src/cpp_array.cpp
     src/cpp_map.cpp
 )
 target_include_directories(${PROJECT_EXEC_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
