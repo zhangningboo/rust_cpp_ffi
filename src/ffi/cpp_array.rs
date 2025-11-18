@@ -52,3 +52,15 @@ pub fn rust_call_cpp_process_array(rust_data: &[u32]) -> Option<Vec<u32>> {
     }
     None
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    // cargo test --lib ffi::cpp_array
+    #[test]
+    fn test_rust_trans_map() {
+        let rust_data: Vec<u32> = vec![1, 2, 3, 4, 5];
+        rust_call_cpp_process_array(&rust_data);
+    }
+
+}

@@ -11,3 +11,15 @@ pub fn rust_trans_number(rust_int: i32, rust_float: f32, rust_double: f64) -> i3
         trans_number(rust_int, rust_float, rust_double)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    // cargo test --lib ffi::cpp_number
+    #[test]
+    fn test_rust_trans_number() {
+        let ffi_process = rust_trans_number(1000, 2.0 , 3.0);
+        println!("rust_trans_number 结果：{}", ffi_process);
+    }
+
+}

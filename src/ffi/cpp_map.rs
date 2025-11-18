@@ -60,3 +60,20 @@ pub fn get_map_result(i: i32) -> Vec<RustGroup> {
     }
     result_vec
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    // cargo test --lib ffi::cpp_map
+    #[test]
+    fn test_rust_trans_map() {
+        for i in 1..10 {
+            println!("======map_result======== {:?}", i);
+            let map_result = get_map_result(i);
+            for item in map_result {
+                println!("{:?}", item);
+            }
+        }
+    }
+
+}
