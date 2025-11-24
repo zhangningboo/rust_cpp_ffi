@@ -31,7 +31,7 @@ pub struct MapResult {
 
 #[link(name = "cpp", kind = "static")]
 unsafe extern "C" {
-    unsafe fn trans_map_result(i: c_int) -> MapResult;
+    unsafe fn trans_map_result(i: i32) -> MapResult;
 
     unsafe fn free_map_result(result: MapResult);
 }

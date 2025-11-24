@@ -28,8 +28,12 @@ impl CppClassFFi {
     }
 }
 
-impl Drop for CppClassFFi {
-    fn drop(&mut self) {
+trait Destroy {
+    fn destroy(&mut self);
+}
+
+impl Destroy for CppClassFFi {
+    fn destroy(&mut self) {
         unsafe {
             free_class_instance(self.0 as *mut CppClassFFi);
         }
@@ -39,14 +43,14 @@ impl Drop for CppClassFFi {
 #[cfg(test)]
 mod tests {
     use super::*;
-    // cargo test --lib ffi::cpp_class
+    // cargo test --lib ffi::cpp_class::test_create_and_add
     #[test]
     fn test_create_and_add() {
         let instance = CppClassFFi::new(42);
         let result = instance.call_instance_func(10, 20);
         assert_eq!(result, 30);
     }
-
+    // cargo test --lib ffi::cpp_class::test_multiple_instances
     #[test]
     fn test_multiple_instances() {
         let inst1 = CppClassFFi::new(1);

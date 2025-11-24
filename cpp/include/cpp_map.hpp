@@ -5,23 +5,23 @@
 #include <string>
 
 struct Rect {
-    int x, y, width, height;
+    int32_t x, y, width, height;
 };
 
 struct PairIntRect {
-    int id;
+    int32_t id;
     Rect rect;
 };
 
 struct Group {
-    int key;
+    int32_t key;
     PairIntRect* pairs;
-    int pair_count;
+    int32_t pair_count;
 };
 
 struct MapResult {
     Group* groups;
-    int group_count;
+    int32_t group_count;
 };
 
 #ifdef __cplusplus
