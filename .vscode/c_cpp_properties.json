@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/data/workspace/aky_vlm_project/3rd/opencv_4.9.0_x86/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

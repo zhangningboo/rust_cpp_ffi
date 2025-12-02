@@ -8,9 +8,8 @@
 struct CppCvMat
 {	
 	int64_t timestamp;
-	void * buffer_ptr;
 	uint8_t * data;
-	int32_t size;
+	uint64_t size;
 	int32_t width;
 	int32_t height;
 	int32_t channels;
@@ -40,7 +39,9 @@ extern "C"
 {
 #endif
 
-	SegmentBboxArray* cpp_segment(const CppCvMat* input_mat);
+    CppCvMat* gen_mat();
+	
+    SegmentBboxArray* cpp_segment(const CppCvMat* input_mat);
 
 	void cpp_segment_free(SegmentBboxArray* bbox_array);
 #ifdef __cplusplus

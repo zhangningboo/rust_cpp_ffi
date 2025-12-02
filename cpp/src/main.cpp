@@ -1,18 +1,19 @@
 #include <iostream>
 #include "cpp_str.hpp"
 
+#include "cpp_segment.hpp"
+
+void test_segment();
+
 int main() {
-
-    std::cout << "11111" << std::endl;
-
-    std::string cstr("cpp str-");
-    auto res = cpp_process_string(cstr);
-    std::cout << res << std::endl;
-
-    std::string ccstr("cpp str=");
-    auto cres = trans_string(ccstr.c_str());
-    std::cout << cres << std::endl;
-    free_string(cres);
-
+    test_segment();
     return 0;
+}
+
+void test_segment() {
+
+    CppCvMat* mat = gen_mat();
+    SegmentBboxArray* array = cpp_segment(mat);
+    cpp_segment_free(array);
+
 }

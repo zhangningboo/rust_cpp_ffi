@@ -9,7 +9,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // 链接c++标准库, Rust 默认不链接 C++ 库    
     let os = env::consts::OS;
-    println!("----------{os:?}");
     match os {
         "linux" => {
             // 在Linux上执行的构建逻辑
@@ -29,6 +28,5 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     
-    println!("cargo:rustc-link-lib=dylib=stdc++");
     Ok(())
 }
