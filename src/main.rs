@@ -2,11 +2,10 @@ mod ffi;
 
 use ffi::cpp_segment::SegmentEngine;
 use rayon::prelude::*; // 引入 Rayon 的并行功能
-use std::time::Instant;
 
 fn main() {
-    let mat = SegmentEngine::new();
-    println!("Got Mat: w={}, h={}", mat.get_width(), mat.get_height());
+    let mat = SegmentEngine::get_cpp_mat();
+    println!("Got Mat: w={}, h={}", mat.width, mat.height);
     
     let results = SegmentEngine::segment(&mat);
     println!("Got results: {}", results.len());
@@ -16,9 +15,9 @@ fn main() {
     results.par_iter().enumerate().for_each(|(i, bbox)| {
         println!("Thread {:?} processing Bbox {}", std::thread::current().id(), i);
         // 注意：这里假设 get_mask_mat() 返回的是新对象或者引用，且 C++ 端没有 Race Condition
-        let mask_mat = bbox.get_mask_mat();
+        let mask_mat = bbox.mask_mat.clone();
         // get_data() 返回 slice，image::load_from_memory 是纯 CPU 计算
-        if let Ok(image) = image::load_from_memory(mask_mat.get_data()) {
+        if let Ok(image) = image::load_from_memory(&mask_mat.data) {
             // save_with_format 是 I/O + 编码操作，并行化收益巨大
             match image.save_with_format(format!("./target/{i}.jpg"), image::ImageFormat::Jpeg) {
                 Ok(_) => {},

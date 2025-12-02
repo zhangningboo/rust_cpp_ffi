@@ -3,17 +3,17 @@ use std::slice;
 
 #[link(name = "cpp", kind = "static")]
 unsafe extern "C" {
-    unsafe fn gen_mat() -> *mut FFiCppCvMat;
+    unsafe fn gen_mat() -> *mut RawCppCvMat;
 
-    unsafe fn free_mat(mat: *mut FFiCppCvMat) -> bool;
+    unsafe fn free_mat(mat: *mut RawCppCvMat) -> bool;
     
-    unsafe fn cpp_segment(mat: *mut FFiCppCvMat) -> *mut FFiSegmentBboxArray; 
+    unsafe fn cpp_segment(mat: *mut RawCppCvMat) -> *mut RawSegmentBboxArray; 
     
-    unsafe fn cpp_segment_free(array: *mut FFiSegmentBboxArray);
+    unsafe fn cpp_segment_free(array: *mut RawSegmentBboxArray);
 }
 
 #[repr(C)]
-pub struct FFiCppCvMat {
+pub struct RawCppCvMat {
     timestamp: i64,
     data: *mut u8,
     size: u64,
@@ -23,57 +23,35 @@ pub struct FFiCppCvMat {
 }
 
 #[repr(C)]
-pub struct FFiSegmentBbox {
-    pub x1: i32,
-    pub y1: i32,
-    pub x2: i32,
-    pub y2: i32,
-    pub score: f32,
-    pub class_id: i32,
-    pub mask: *mut f32,
-    pub mask_len: i32,
-    pub mask_mat: *mut FFiCppCvMat,
+pub struct RawSegmentBbox {
+    x1: i32,
+    y1: i32,
+    x2: i32,
+    y2: i32,
+    score: f32,
+    class_id: i32,
+    mask: *mut f32,
+    mask_len: i32,
+    mask_mat: *mut RawCppCvMat,
 }
 
 #[repr(C)]
-pub struct FFiSegmentBboxArray {
-    pub bboxes: *mut FFiSegmentBbox,
-    pub len: i32,
+pub struct RawSegmentBboxArray {
+    bboxes: *mut RawSegmentBbox,
+    len: i32,
 }
 
 #[derive(Debug, Clone)]
 pub struct CppCvMatSafe {
-    timestamp: i64,
-    data: Vec<u8>,
-    width: i32,
-    height: i32,
-    channels: i32,
+    pub timestamp: i64,
+    pub data: Vec<u8>,
+    pub width: i32,
+    pub height: i32,
+    pub channels: i32,
 }
 
 unsafe impl Send for CppCvMatSafe {}
 unsafe impl Sync for CppCvMatSafe {}
-
-impl CppCvMatSafe {
-    pub fn get_timestamp(&self) -> i64 {
-        self.timestamp
-    }
-    
-    pub fn get_data(&self) -> &[u8] {
-        &self.data
-    }
-
-    pub fn get_width(&self) -> i32 {
-        self.width
-    }
-    
-    pub fn get_height(&self) -> i32 {
-        self.height
-    }
-    
-    pub fn get_channels(&self) -> i32 {
-        self.channels
-    }
-}
 
 #[derive(Debug, Clone)]
 pub struct SegmentBboxSafe {
@@ -90,50 +68,11 @@ pub struct SegmentBboxSafe {
 unsafe impl Send for SegmentBboxSafe {}
 unsafe impl Sync for SegmentBboxSafe {}
 
-impl SegmentBboxSafe {
-
-    pub fn get_x1(&self) -> i32 {
-        self.x1
-    }
-    
-    pub fn get_y1(&self) -> i32 {
-        self.y1
-    }
-
-    pub fn get_x2(&self) -> i32 {
-        self.x2
-    }
-    
-    pub fn get_y2(&self) -> i32 {
-        self.y2
-    }
-
-    pub fn get_score(&self) -> f32 {
-        self.score
-    }
-    
-    pub fn get_class_id(&self) -> i32 {
-        self.class_id
-    }
-
-    pub fn get_mask(&self) -> &[f32] {
-        &self.mask
-    }
-
-    pub fn get_mask_mat(&self) -> &CppCvMatSafe {
-        &self.mask_mat
-    }
-}
-
-#[repr(C)]
 #[derive(Clone, Copy)]
-pub struct SegmentEngine(*mut c_void);
-
-unsafe impl Send for SegmentEngine {}
-unsafe impl Sync for SegmentEngine {}
+pub struct SegmentEngine;
 
 impl SegmentEngine {
-    pub fn new() -> CppCvMatSafe {
+    pub fn get_cpp_mat() -> CppCvMatSafe {
         unsafe {
             // 1. 获取 C++ 指针
             let ffi_mat_ptr = gen_mat();
@@ -168,7 +107,7 @@ impl SegmentEngine {
         unsafe {
             // 1. 构建临时的 FFi 结构体，将 Rust 的 Vec 指针暴露给 C++
             // 这里不需要拷贝数据，只需要传递指针，因为 C++ 只是读取 (const)
-            let mut ffi_input = FFiCppCvMat {
+            let mut ffi_input = RawCppCvMat {
                 timestamp: mat.timestamp,
                 data: mat.data.as_ptr() as *mut u8, // 获取 Vec 的指针
                 size: mat.data.len() as u64,
