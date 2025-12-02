@@ -50,6 +50,9 @@ pub struct CppCvMatSafe {
     channels: i32,
 }
 
+unsafe impl Send for CppCvMatSafe {}
+unsafe impl Sync for CppCvMatSafe {}
+
 impl CppCvMatSafe {
     pub fn get_timestamp(&self) -> i64 {
         self.timestamp
@@ -83,6 +86,9 @@ pub struct SegmentBboxSafe {
     pub mask: Vec<f32>,
     pub mask_mat: CppCvMatSafe,
 }
+
+unsafe impl Send for SegmentBboxSafe {}
+unsafe impl Sync for SegmentBboxSafe {}
 
 impl SegmentBboxSafe {
 
@@ -225,26 +231,4 @@ impl SegmentEngine {
         }
     }
 
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    // cargo test --lib ffi::cpp_segment
-    #[test]
-    fn test_rust_segment() {
-        // 模拟流程
-        let mat = SegmentEngine::new();
-        println!("Got Mat: size={}, w={}, h={}", mat.data.len(), mat.width, mat.height);
-        
-        let results = SegmentEngine::segment(&mat);
-        println!("Got results: {}", results.len());
-        
-        for (i, bbox) in results.iter().enumerate() {
-            println!("Bbox {}: score={}, mask_len={}", i, bbox.score, bbox.mask.len());
-            if let Some(m) = &bbox.mask_mat {
-                println!("   MaskMat size={}", m.data.len());
-            }
-        }
-    }
 }

@@ -5,8 +5,8 @@ edition = "2024"
 
 [build-dependencies]
 dotenv = "0.15.0"
-cmake = "0.1.54"
-cxx-build = "1.0.161"
+cc = "1.2.48"
+glob = "0.3.3"
 
 [dependencies]
 tracing = "0.1.41"
@@ -16,3 +16,5 @@ serde_derive = "1.0.219"
 serde_json = "1.0.140"
 serde_with = "3.12.0"
 cxx = { version = "1.0.161", features = ["std", "c++17"] }
+image = { version = "0.25.9" }
+rayon = { version = "1.11.0" }
