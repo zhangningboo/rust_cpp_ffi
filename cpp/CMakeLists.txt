@@ -30,6 +30,7 @@ add_executable(${PROJECT_EXEC_NAME} src/main.cpp
     src/cpp_array.cpp
     src/cpp_map.cpp
     src/cpp_class.cpp
+    src/cpp_segment.cpp
 )
 target_include_directories(${PROJECT_EXEC_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 # target_link_libraries(${PROJECT_EXEC_NAME} PUBLIC stdc++)
