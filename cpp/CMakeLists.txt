@@ -3,12 +3,14 @@ project(cpp)
 
 # 设置 C++ 标准
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_COMPILER "/usr/bin/gcc")
-set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# set(OpenCV_DIR $ENV{OpenCV_HOME}/lib/cmake/opencv4)
-set(OpenCV_DIR /data/workspace/aky_vlm_project/3rd/opencv_4.9.0_x86/lib/cmake/opencv4)
+set(FFMPEG_DIR $ENV{FFMPEG_HOME}/lib/cmake)
+find_package(FFMPEG REQUIRED NO_DEFAULT_PATH)
+include_directories(${FFMPEG_INCLUDE_DIRS})
+link_directories(${FFMPEG_LIB_DIRS})
+
+set(OpenCV_DIR $ENV{OpenCV_HOME}/lib/cmake/opencv4)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
@@ -25,10 +27,14 @@ add_library(${PROJECT_NAME} STATIC
 )
 # 头文件路径（供 Rust FFI 使用）
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_directories(${PROJECT_NAME} PUBLIC
+    ${FFMPEG_LIB_DIRS}
+)
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    ${BM_LIBS}
     ${OpenCV_LIBS}
 )
-install(TARGETS ${PROJECT_NAME} DESTINATION .)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_SOURCE_DIR}/../cpp_lib)
 
 
 set(PROJECT_EXEC_NAME ${PROJECT_NAME}_bin)
@@ -41,6 +47,9 @@ add_executable(${PROJECT_EXEC_NAME} src/main.cpp
     src/cpp_segment.cpp
 )
 target_include_directories(${PROJECT_EXEC_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_EXEC_NAME} PRIVATE
+target_link_directories(${PROJECT_EXEC_NAME} PUBLIC
+    ${FFMPEG_LIB_DIRS}
+)
+target_link_libraries(${PROJECT_EXEC_NAME} PUBLIC
     ${OpenCV_LIBS}
 )

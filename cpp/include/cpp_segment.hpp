@@ -4,6 +4,9 @@
 #include <cstring>
 #include <string>
 #include <cstdint>
+#include <vector>
+
+#include "opencv2/opencv.hpp"
 
 struct CppCvMat
 {	
@@ -40,8 +43,10 @@ extern "C"
 #endif
 
     CppCvMat* gen_mat();
+
+    bool free_mat(CppCvMat* mat);
 	
-    SegmentBboxArray* cpp_segment(const CppCvMat* input_mat);
+    SegmentBboxArray* cpp_segment(CppCvMat* input_mat);
 
 	void cpp_segment_free(SegmentBboxArray* bbox_array);
 #ifdef __cplusplus

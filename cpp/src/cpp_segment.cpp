@@ -1,6 +1,4 @@
 #include "cpp_segment.hpp"
-#include "opencv2/opencv.hpp"
-#include <vector>
 
 #ifdef __cplusplus
 extern "C"
@@ -23,7 +21,16 @@ extern "C"
         return mask_mat;
     }
 
-    SegmentBboxArray* cpp_segment(const CppCvMat* input_mat) 
+    bool free_mat(CppCvMat* mat) {
+        if (mat) {
+            delete[] mat->data;
+            delete mat;
+            return true;
+        }
+        return false;
+    }
+
+    SegmentBboxArray* cpp_segment(CppCvMat* input_mat) 
     {
         // 1. 类型修复: u_char -> uint8_t
         // 2. 向量构造: 确保数据指针有效
@@ -45,6 +52,7 @@ extern "C"
         bbox_array->len = count;
 
         for (int i = 0; i < count; i++) {
+            std::cout << "i: " << i << std::endl;
             // 直接操作数组元素，不要在这里 new SegmentBbox，否则会导致结构体本身的内存泄漏
             SegmentBbox& box = bbox_array->bboxes[i];
             // 绘图操作 (注意：这里是在原图 frame 上不断叠加文字，如果是为了测试每张图不同，应该 clone)
@@ -97,6 +105,7 @@ extern "C"
             if (bbox_array->bboxes) {
                 // 6. 严重的内存泄漏修复: 必须深度释放内部指针
                 for (int i = 0; i < bbox_array->len; i++) {
+                    std::cout << "free i: " << i << std::endl;
                     SegmentBbox& box = bbox_array->bboxes[i];
 
                     // 释放 mask float 数组
