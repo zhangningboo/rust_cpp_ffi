@@ -8,7 +8,7 @@
 
 #include "opencv2/opencv.hpp"
 
-struct CppCvMat
+typedef struct
 {	
 	int64_t timestamp;
 	uint8_t * data;
@@ -16,9 +16,9 @@ struct CppCvMat
 	int32_t width;
 	int32_t height;
 	int32_t channels;
-};
+} CppCvMat;
 
-struct SegmentBbox 
+typedef struct 
 {
 	int32_t x1;
 	int32_t y1;
@@ -29,13 +29,13 @@ struct SegmentBbox
 	float * mask;
 	int32_t mask_len;
 	CppCvMat* mask_mat;
-};
+} SegmentBbox;
 
-struct SegmentBboxArray
+typedef struct
 {
 	SegmentBbox* bboxes;
 	int32_t len;
-};
+} SegmentBboxArray;
 
 #ifdef __cplusplus
 extern "C"
